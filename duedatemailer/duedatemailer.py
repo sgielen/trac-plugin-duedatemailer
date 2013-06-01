@@ -32,7 +32,7 @@ class DueDateMailer(Component):
 					due_diff = parse_date(t['due_date']) - now
 					if due_diff <= self.diff_threshold:
 						hard_mail.append(t)
-				elif t['soft_due_date']:
+				if t['soft_due_date']:
 					soft_due_diff = parse_date(t['soft_due_date']) - now
 					if soft_due_diff <= self.soft_diff_threshold:
 						soft_mail.append(t)
