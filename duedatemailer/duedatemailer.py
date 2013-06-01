@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from trac.core import *
 from trac.ticket import TicketSystem, Ticket
 from trac.admin.api import IAdminCommandProvider
@@ -8,8 +8,8 @@ from trac.util.datefmt import parse_date, to_timestamp, utc
 class DueDateMailer(Component):
 	implements(IAdminCommandProvider)
 
-	soft_days_threshold = 4
-	days_threshold = 4
+	soft_diff_threshold = timedelta(4)
+	diff_threshold = timedelta(4)
 
 	def get_admin_commands(self):
 		yield ('ticket checkdates', '',
@@ -29,12 +29,12 @@ class DueDateMailer(Component):
 				t = Ticket(self.env, ticket_id, db)
 				t['id'] = ticket_id
 				if t['due_date']:
-					days_left = (parse_date(t['due_date']) - now).days
-					if days_left <= self.days_threshold:
+					due_diff = parse_date(t['due_date']) - now
+					if due_diff <= self.diff_threshold:
 						hard_mail.append(t)
 				elif t['soft_due_date']:
-					soft_days_left = (parse_date(t['soft_due_date']) - now).days
-					if soft_days_left <= self.soft_days_threshold:
+					soft_due_diff = parse_date(t['soft_due_date']) - now
+					if soft_due_diff <= self.soft_diff_threshold:
 						soft_mail.append(t)
 
 		if len(hard_mail) == 0 and len(soft_mail) == 0:
