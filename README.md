@@ -8,9 +8,10 @@ At the moment, it adds a "ticket checkdates" command to trac-admin which
 outputs a nice list of tickets that should be checked soon.  If there is no
 such ticket, the command outputs nothing. This allows its use in cron setups
 where cron automatically sends the user an e-mail when a command outputs
-something. For example, add the following line to crontab to do a tickets check
-every night at 3:00:
+something. For example, add the following two lines to crontab to do a tickets
+check every night at 3:00:
 
+    CONTENT_TYPE="text/plain; charset=utf-8"
     0 3 * * * /usr/local/bin/trac-admin /var/www/private.sjorsgielen.nl/trac ticket checkdates
 
 Eventually, the plugin should be able to send e-mails to the relevant trac

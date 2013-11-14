@@ -61,4 +61,4 @@ class DueDateMailer(Component):
 
 		mail_body += "See you next time!\n"
 		mail_body += "Trac Assistent"
-		print mail_body,
+		print mail_body.encode('utf-8')
